@@ -3,133 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>تسجيل البيانات</title>
+    <title>بوابة التسجيل الإلكتروني</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        /* استخدام متغيرات تيليجرام ليتوافق اللون مع ثيم المستخدم */
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #f0f2f5);
+            --text-color: var(--tg-theme-text-color, #1c1c1e);
+            --hint-color: var(--tg-theme-hint-color, #8e8e93);
+            --card-bg: var(--tg-theme-secondary-bg-color, #ffffff);
+            --primary-color: var(--tg-theme-button-color, #007aff);
+            --border-color: #d1d1d6;
+        }
+
         body {
-            background-color: var(--tg-theme-bg-color, #ffffff);
-            color: var(--tg-theme-text-color, #222222);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 20px 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
 
-        h2 {
+        .header {
             text-align: center;
-            color: var(--tg-theme-text-color, #222222);
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            font-size: 14px;
+            color: var(--hint-color);
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
         }
 
         input {
             width: 100%;
-            padding: 12px;
+            padding: 14px 12px;
             box-sizing: border-box;
-            border: 1px solid var(--tg-theme-hint-color, #cccccc);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            background-color: var(--tg-theme-secondary-bg-color, #f4f4f5);
-            color: var(--tg-theme-text-color, #000000);
-            font-size: 16px;
+            background-color: transparent;
+            color: var(--text-color);
+            font-size: 15px;
+            transition: border-color 0.3s, box-shadow 0.3s;
             outline: none;
         }
 
         input:focus {
-            border-color: var(--tg-theme-button-color, #2481cc);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
         }
 
-        button {
-            width: 100%;
-            padding: 15px;
-            margin-top: 10px;
-            background-color: var(--tg-theme-button-color, #2481cc);
-            color: var(--tg-theme-button-text-color, #ffffff);
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
+        input::placeholder {
+            color: var(--hint-color);
         }
 
-        button:active {
-            opacity: 0.8;
+        button[type="submit"] {
+            display: none; /* نعتمد على زر تيليجرام الأساسي */
         }
     </style>
 </head>
 <body>
 
-    <h2>نموذج التسجيل</h2>
-    
-    <form id="registrationForm">
-        <div class="form-group">
-            <label for="fullName">الاسم الرباعي واللقب:</label>
-            <input type="text" id="fullName" placeholder="أدخل اسمك الكامل" required>
+    <div class="container">
+        <div class="header">
+            <h2>استمارة تسجيل البيانات</h2>
+            <p>يرجى إدخال بياناتك بدقة، علماً أنه لا يمكن التعديل بعد الإرسال.</p>
         </div>
+        
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="fullName">الاسم الرباعي واللقب</label>
+                <input type="text" id="fullName" placeholder="مثال: أحمد محمد علي حسن" required>
+            </div>
 
-        <div class="form-group">
-            <label for="motherName">اسم الأم الثلاثي:</label>
-            <input type="text" id="motherName" placeholder="أدخل اسم الأم" required>
-        </div>
+            <div class="form-group">
+                <label for="motherName">اسم الأم الثلاثي</label>
+                <input type="text" id="motherName" placeholder="مثال: فاطمة إبراهيم محمود" required>
+            </div>
 
-        <div class="form-group">
-            <label for="education">التحصيل الدراسي:</label>
-            <input type="text" id="education" placeholder="مثال: بكالوريوس هندسة" required>
-        </div>
+            <div class="form-group">
+                <label for="education">التحصيل الدراسي</label>
+                <input type="text" id="education" placeholder="مثال: بكالوريوس إدارة أعمال" required>
+            </div>
 
-        <div class="form-group">
-            <label for="gradYear">سنة التخرج:</label>
-            <input type="number" id="gradYear" placeholder="مثال: 2023" required>
-        </div>
+            <div class="form-group">
+                <label for="gradYear">سنة التخرج</label>
+                <input type="number" id="gradYear" placeholder="مثال: 2022" required>
+            </div>
 
-        <div class="form-group">
-            <label for="phone">رقم الهاتف:</label>
-            <input type="tel" id="phone" placeholder="أدخل رقم الهاتف" required>
-        </div>
+            <div class="form-group">
+                <label for="phone">رقم الهاتف</label>
+                <input type="tel" id="phone" placeholder="مثال: 07700000000" required dir="ltr" style="text-align: right;">
+            </div>
 
-        <button type="submit" id="submitBtn" style="display: none;">إرسال</button>
-    </form>
+            <button type="submit" id="submitBtn">إرسال</button>
+        </form>
+    </div>
 
     <script>
-        // تهيئة تطبيق تيليجرام
-        let tg = window.Telegram.WebApp;
-        
-        // توسيع التطبيق ليأخذ الشاشة كاملة
+        const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // تجهيز الزر الرئيسي الخاص بتيليجرام (MainButton)
-        tg.MainButton.text = "إرسال البيانات";
+        tg.MainButton.text = "إرسال البيانات واعتمادها";
+        tg.MainButton.color = "#007aff";
+        tg.MainButton.textColor = "#ffffff";
         tg.MainButton.show();
 
         const form = document.getElementById('registrationForm');
 
-        // عند الضغط على الزر الرئيسي لتيليجرام
         tg.MainButton.onClick(function() {
-            // التأكد من أن جميع الحقول ممتلئة
             if(form.checkValidity()) {
-                // تجميع البيانات في كائن JSON
                 const data = {
-                    fullName: document.getElementById('fullName').value,
-                    motherName: document.getElementById('motherName').value,
-                    education: document.getElementById('education').value,
-                    gradYear: document.getElementById('gradYear').value,
-                    phone: document.getElementById('phone').value
+                    fullName: document.getElementById('fullName').value.trim(),
+                    motherName: document.getElementById('motherName').value.trim(),
+                    education: document.getElementById('education').value.trim(),
+                    gradYear: document.getElementById('gradYear').value.trim(),
+                    phone: document.getElementById('phone').value.trim()
                 };
-
-                // إرسال البيانات إلى البوت وإغلاق الـ Mini App
                 tg.sendData(JSON.stringify(data));
             } else {
-                // إذا كانت هناك حقول فارغة، إظهار تنبيه
-                tg.showAlert("يرجى تعبئة جميع الحقول بشكل صحيح قبل الإرسال.");
+                tg.HapticFeedback.notificationOccurred('error');
+                tg.showAlert("تنبيه: يرجى التأكد من تعبئة جميع الحقول المطلوبة بشكل صحيح.");
             }
         });
     </script>
