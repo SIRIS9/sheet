@@ -111,8 +111,8 @@
 
     <div class="container">
         <div class="header">
-            <h2>استمارة البيانات</h2>
-            <p>يرجى إدخال بياناتك بدقة. (يمكنك إعادة إرسال الاستمارة لاحقاً لتحديث بياناتك).</p>
+            <h2 id="formTitle">استمارة البيانات</h2>
+            <p id="formSubtitle">يرجى إدخال بياناتك بدقة.</p>
         </div>
         
         <form id="registrationForm">
@@ -148,6 +148,30 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+
+        // التعبئة التلقائية للبيانات إذا كان المستخدم مسجلاً مسبقاً (تحديث)
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if(urlParams.has('fullName')) {
+                document.getElementById('fullName').value = urlParams.get('fullName');
+                document.getElementById('motherName').value = urlParams.get('motherName');
+                document.getElementById('education').value = urlParams.get('education');
+                document.getElementById('gradYear').value = urlParams.get('gradYear');
+                document.getElementById('phone').value = urlParams.get('phone');
+                
+                // تغيير النصوص لتناسب وضع "التحديث"
+                document.getElementById('formTitle').innerText = "تحديث البيانات";
+                document.getElementById('formSubtitle').innerText = "قم بتعديل الحقول التي ترغب بتحديثها أدناه.";
+                document.getElementById('submitBtn').innerText = "حفظ التحديثات الجديدة";
+            }
+            
+            // تحقق مما إذا كان المدير يضيف شخصاً جديداً (يأتي بمتغير admin_add)
+            if(urlParams.has('admin_add')) {
+                document.getElementById('formTitle').innerText = "إضافة مستخدم يدوي";
+                document.getElementById('formSubtitle').innerText = "أنت تقوم الآن بإضافة سجل جديد كمدير.";
+            }
+        });
 
         const form = document.getElementById('registrationForm');
 
