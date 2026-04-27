@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>بوابة التسجيل الإلكتروني</title>
+    <title>بوابة التسجيل</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -149,10 +149,18 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        // التعبئة التلقائية للبيانات إذا كان المستخدم مسجلاً مسبقاً (تحديث)
+        let targetUserId = "";
+
         document.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
             
+            if(urlParams.has('target_id')) {
+                targetUserId = urlParams.get('target_id');
+                document.getElementById('formTitle').innerText = "تعديل حساب (للمدير)";
+                document.getElementById('formSubtitle').innerText = `أنت تقوم بتعديل بيانات المستخدم: ${targetUserId}`;
+                document.getElementById('submitBtn').innerText = "حفظ التعديلات للمستخدم";
+            }
+
             if(urlParams.has('fullName')) {
                 document.getElementById('fullName').value = urlParams.get('fullName');
                 document.getElementById('motherName').value = urlParams.get('motherName');
@@ -160,13 +168,13 @@
                 document.getElementById('gradYear').value = urlParams.get('gradYear');
                 document.getElementById('phone').value = urlParams.get('phone');
                 
-                // تغيير النصوص لتناسب وضع "التحديث"
-                document.getElementById('formTitle').innerText = "تحديث البيانات";
-                document.getElementById('formSubtitle').innerText = "قم بتعديل الحقول التي ترغب بتحديثها أدناه.";
-                document.getElementById('submitBtn').innerText = "حفظ التحديثات الجديدة";
+                if(!targetUserId) {
+                    document.getElementById('formTitle').innerText = "تحديث بياناتي";
+                    document.getElementById('formSubtitle').innerText = "قم بتعديل الحقول التي ترغب بتحديثها أدناه.";
+                    document.getElementById('submitBtn').innerText = "حفظ التحديثات الجديدة";
+                }
             }
             
-            // تحقق مما إذا كان المدير يضيف شخصاً جديداً (يأتي بمتغير admin_add)
             if(urlParams.has('admin_add')) {
                 document.getElementById('formTitle').innerText = "إضافة مستخدم يدوي";
                 document.getElementById('formSubtitle').innerText = "أنت تقوم الآن بإضافة سجل جديد كمدير.";
@@ -184,7 +192,8 @@
                     motherName: document.getElementById('motherName').value.trim(),
                     education: document.getElementById('education').value.trim(),
                     gradYear: document.getElementById('gradYear').value.trim(),
-                    phone: document.getElementById('phone').value.trim()
+                    phone: document.getElementById('phone').value.trim(),
+                    target_id: targetUserId
                 };
                 
                 tg.sendData(JSON.stringify(data));
