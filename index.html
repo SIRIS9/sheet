@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تسجيل البيانات</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        /* استخدام متغيرات تيليجرام ليتوافق اللون مع ثيم المستخدم */
+        body {
+            background-color: var(--tg-theme-bg-color, #ffffff);
+            color: var(--tg-theme-text-color, #222222);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--tg-theme-text-color, #222222);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid var(--tg-theme-hint-color, #cccccc);
+            border-radius: 8px;
+            background-color: var(--tg-theme-secondary-bg-color, #f4f4f5);
+            color: var(--tg-theme-text-color, #000000);
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--tg-theme-button-color, #2481cc);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 10px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:active {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>نموذج التسجيل</h2>
+    
+    <form id="registrationForm">
+        <div class="form-group">
+            <label for="fullName">الاسم الرباعي واللقب:</label>
+            <input type="text" id="fullName" placeholder="أدخل اسمك الكامل" required>
+        </div>
+
+        <div class="form-group">
+            <label for="motherName">اسم الأم الثلاثي:</label>
+            <input type="text" id="motherName" placeholder="أدخل اسم الأم" required>
+        </div>
+
+        <div class="form-group">
+            <label for="education">التحصيل الدراسي:</label>
+            <input type="text" id="education" placeholder="مثال: بكالوريوس هندسة" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gradYear">سنة التخرج:</label>
+            <input type="number" id="gradYear" placeholder="مثال: 2023" required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">رقم الهاتف:</label>
+            <input type="tel" id="phone" placeholder="أدخل رقم الهاتف" required>
+        </div>
+
+        <button type="submit" id="submitBtn" style="display: none;">إرسال</button>
+    </form>
+
+    <script>
+        // تهيئة تطبيق تيليجرام
+        let tg = window.Telegram.WebApp;
+        
+        // توسيع التطبيق ليأخذ الشاشة كاملة
+        tg.expand();
+
+        // تجهيز الزر الرئيسي الخاص بتيليجرام (MainButton)
+        tg.MainButton.text = "إرسال البيانات";
+        tg.MainButton.show();
+
+        const form = document.getElementById('registrationForm');
+
+        // عند الضغط على الزر الرئيسي لتيليجرام
+        tg.MainButton.onClick(function() {
+            // التأكد من أن جميع الحقول ممتلئة
+            if(form.checkValidity()) {
+                // تجميع البيانات في كائن JSON
+                const data = {
+                    fullName: document.getElementById('fullName').value,
+                    motherName: document.getElementById('motherName').value,
+                    education: document.getElementById('education').value,
+                    gradYear: document.getElementById('gradYear').value,
+                    phone: document.getElementById('phone').value
+                };
+
+                // إرسال البيانات إلى البوت وإغلاق الـ Mini App
+                tg.sendData(JSON.stringify(data));
+            } else {
+                // إذا كانت هناك حقول فارغة، إظهار تنبيه
+                tg.showAlert("يرجى تعبئة جميع الحقول بشكل صحيح قبل الإرسال.");
+            }
+        });
+    </script>
+</body>
+</html>
