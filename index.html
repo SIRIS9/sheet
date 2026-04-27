@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>بوابة التسجيل</title>
+    <title>بوابة التسجيل الإلكتروني</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -87,7 +87,6 @@
             color: var(--hint-color);
         }
 
-        /* تعديل الزر ليصبح مرئياً وجذاباً بدلاً من إخفائه */
         button[type="submit"] {
             display: block;
             width: 100%;
@@ -112,8 +111,8 @@
 
     <div class="container">
         <div class="header">
-            <h2>استمارة تسجيل البيانات</h2>
-            <p>يرجى إدخال بياناتك بدقة، علماً أنه لا يمكن التعديل بعد الإرسال.</p>
+            <h2>استمارة البيانات</h2>
+            <p>يرجى إدخال بياناتك بدقة. (يمكنك إعادة إرسال الاستمارة لاحقاً لتحديث بياناتك).</p>
         </div>
         
         <form id="registrationForm">
@@ -142,7 +141,7 @@
                 <input type="tel" id="phone" placeholder="مثال: 07700000000" required dir="ltr" style="text-align: right;">
             </div>
 
-            <button type="submit" id="submitBtn">إرسال البيانات واعتمادها</button>
+            <button type="submit" id="submitBtn">حفظ واعتماد البيانات</button>
         </form>
     </div>
 
@@ -152,9 +151,8 @@
 
         const form = document.getElementById('registrationForm');
 
-        // ربط الإرسال بالزر الموجود داخل الصفحة بدلاً من زر تيليجرام
         form.addEventListener('submit', function(event) {
-            event.preventDefault(); // منع إعادة تحميل الصفحة
+            event.preventDefault(); 
             
             if(form.checkValidity()) {
                 const data = {
@@ -165,7 +163,6 @@
                     phone: document.getElementById('phone').value.trim()
                 };
                 
-                // إرسال البيانات للبوت
                 tg.sendData(JSON.stringify(data));
             } else {
                 tg.HapticFeedback.notificationOccurred('error');
