@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>بوابة التسجيل الإلكتروني</title>
+    <title>بوابة التسجيل</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
@@ -87,8 +87,24 @@
             color: var(--hint-color);
         }
 
+        /* تعديل الزر ليصبح مرئياً وجذاباً بدلاً من إخفائه */
         button[type="submit"] {
-            display: none; /* نعتمد على زر تيليجرام الأساسي */
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: opacity 0.2s;
+        }
+
+        button[type="submit"]:active {
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -126,7 +142,7 @@
                 <input type="tel" id="phone" placeholder="مثال: 07700000000" required dir="ltr" style="text-align: right;">
             </div>
 
-            <button type="submit" id="submitBtn">إرسال</button>
+            <button type="submit" id="submitBtn">إرسال البيانات واعتمادها</button>
         </form>
     </div>
 
@@ -134,14 +150,12 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        tg.MainButton.text = "إرسال البيانات واعتمادها";
-        tg.MainButton.color = "#007aff";
-        tg.MainButton.textColor = "#ffffff";
-        tg.MainButton.show();
-
         const form = document.getElementById('registrationForm');
 
-        tg.MainButton.onClick(function() {
+        // ربط الإرسال بالزر الموجود داخل الصفحة بدلاً من زر تيليجرام
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // منع إعادة تحميل الصفحة
+            
             if(form.checkValidity()) {
                 const data = {
                     fullName: document.getElementById('fullName').value.trim(),
@@ -150,6 +164,8 @@
                     gradYear: document.getElementById('gradYear').value.trim(),
                     phone: document.getElementById('phone').value.trim()
                 };
+                
+                // إرسال البيانات للبوت
                 tg.sendData(JSON.stringify(data));
             } else {
                 tg.HapticFeedback.notificationOccurred('error');
